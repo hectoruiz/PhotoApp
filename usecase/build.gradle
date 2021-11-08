@@ -1,0 +1,18 @@
+plugins {
+    id 'kotlin'
+    id 'kotlin-kapt'
+}
+
+dependencies {
+
+    implementation project(':domain')
+    implementation project(':commons')
+
+    // Dagger Hilt
+    implementation "com.google.dagger:hilt-core:$rootProject.daggerHiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$rootProject.daggerHiltVersion"
+
+    // Testing libraries
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "io.mockk:mockk:$rootProject.mockkVersion"
+}
