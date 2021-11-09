@@ -26,6 +26,7 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled = true
         sourceCompatibility rootProject.javaVersion
         targetCompatibility rootProject.javaVersion
     }
@@ -61,6 +62,7 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$rootProject.pagingVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$rootProject.toolsAndroidVersion"
 
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:$rootProject.daggerHiltVersion"
