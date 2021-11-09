@@ -1,12 +1,12 @@
 package hector.ruiz.usecase.repositories
 
-import hector.ruiz.domain.Photo
+import hector.ruiz.domain.PhotoUi
 
 interface PhotoRepository {
 
-    suspend fun addPhoto(photoPath: String)
+    suspend fun addPhoto(photo: PhotoUi)
 
-    suspend fun getAllPhotos(): List<Photo>
+    suspend fun getAllPhotos(size: Int): List<PhotoUi>
 
-    suspend fun removePhoto(photoId: Int)
+    suspend fun removePhoto(photo: PhotoUi)
 }

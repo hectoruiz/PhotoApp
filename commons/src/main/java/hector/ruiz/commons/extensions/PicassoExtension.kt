@@ -1,11 +1,11 @@
-package hector.ruiz.photoapp.extensions
+package hector.ruiz.commons.extensions
 
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import hector.ruiz.photoapp.R
+import hector.ruiz.commons.R
 
 fun Picasso.loadImage(
     imagePath: String?,

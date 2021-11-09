@@ -14,14 +14,10 @@ android {
         versionName rootProject.versionNameVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        def properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-        resValue "string", "marvel_api_public_key", properties.getProperty("MARVEL_API_PUBLIC_KEY", "")
-        resValue "string", "marvel_api_private_key", properties.getProperty("MARVEL_API_PRIVATE_KEY", "")
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled = true
         sourceCompatibility rootProject.javaVersion
         targetCompatibility rootProject.javaVersion
     }
@@ -32,6 +28,11 @@ dependencies {
     implementation project(':data')
     implementation project(':domain')
     implementation project(':commons')
+
+    // Android Libraries
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:$rootProject.daggerHiltVersion"

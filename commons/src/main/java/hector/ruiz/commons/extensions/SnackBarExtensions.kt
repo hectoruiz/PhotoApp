@@ -1,4 +1,4 @@
-package hector.ruiz.photoapp.extensions
+package hector.ruiz.commons.extensions
 
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
