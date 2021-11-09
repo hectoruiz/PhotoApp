@@ -32,7 +32,7 @@ dependencies {
     // Android Libraries
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$rootProject.toolsAndroidVersion"
 
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:$rootProject.daggerHiltVersion"
