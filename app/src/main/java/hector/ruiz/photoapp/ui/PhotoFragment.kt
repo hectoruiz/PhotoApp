@@ -26,7 +26,6 @@ class PhotoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentPhotoBinding.inflate(inflater, container, false)
         initRecyclerView()
 
@@ -36,8 +35,8 @@ class PhotoFragment : Fragment() {
     private fun initRecyclerView() {
         binding?.photoList?.adapter =
             photoAdapter.also { it.withLoadStateFooter(PhotoLoadStateAdapter { it.retry() }) }
-        photoAdapter.onDeleteClick = { photoId ->
-            photoId?.let {
+        photoAdapter.onDeleteClick = { photo ->
+            photo?.let {
                 // TODO
                 // Call view model to remove the photo id selected
             }
@@ -46,6 +45,9 @@ class PhotoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // TODO
+        // Call view model to get all the photos
 
         binding?.fab?.setOnClickListener {
             // TODO

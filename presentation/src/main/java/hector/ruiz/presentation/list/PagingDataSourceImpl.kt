@@ -2,54 +2,37 @@ package hector.ruiz.presentation.list
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import hector.ruiz.domain.Photo
+import hector.ruiz.domain.PhotoUi
 import hector.ruiz.usecase.usecases.GetPhotosUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class PagingDataSourceImpl @Inject constructor(private val getPhotosUseCase: GetPhotosUseCase) :
-    PagingSource<Int, Photo>() {
+    PagingSource<Int, PhotoUi>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PhotoUi> {
         return withContext(Dispatchers.IO) {
+            val size = params.key ?: DEFAULT_SIZE
             try {
-                LoadResult.Page(
-                    data = emptyList(),
-                    prevKey = null,
-                    nextKey = null
-                )
-                /*
-                val photoId = params.key ?: DEFAULT_PAGE
-                getPhotosUseCase(nextPageNumber).let { responseResult ->
-                    val responseList: List<Photo>? =
-                        responseResult.data?.charactersData?.characterList?.mapNotNull {
-                            it
-                        }
+                getPhotosUseCase(size).let { photoList ->
                     LoadResult.Page(
-                        data = responseList ?: emptyList(),
+                        data = photoList,
                         prevKey = null,
-                        nextKey = if (responseList.isNullOrEmpty()) {
-                            null
-                        } else {
-                            responseResult.data?.charactersData?.run {
-                                offset?.plus(limit ?: DEFAULT_PAGE_SIZE)
-                            }
-                        }
+                        nextKey = if (photoList.isNullOrEmpty()) null else size + DEFAULT_SIZE
                     )
-                }*/
+                }
             } catch (e: Exception) {
                 LoadResult.Error(e)
             }
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Photo>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, PhotoUi>): Int? {
         return state.anchorPosition
     }
 
     private companion object {
-        const val DEFAULT_PAGE = 0
-        const val DEFAULT_PAGE_SIZE = 20
+        const val DEFAULT_SIZE = 80
     }
 }

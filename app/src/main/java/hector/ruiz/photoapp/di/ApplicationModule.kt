@@ -1,7 +1,7 @@
 package hector.ruiz.photoapp.di
 
 import android.content.Context
-import com.squareup.picasso.OkHttp3Downloader
+import androidx.room.Room
 import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
@@ -9,7 +9,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hector.ruiz.datasource.api.ApiDatabase
-import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 @Module
@@ -18,16 +17,15 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun providerApiClient(): ApiDatabase {
-        return ApiDatabase()
+    fun providerApiClient(@ApplicationContext context: Context): ApiDatabase {
+        return Room.databaseBuilder(context, ApiDatabase::class.java, DATABASE_NAME).build()
     }
 
     @Provides
     @Singleton
-    fun providerPicasso(
-        @ApplicationContext context: Context,
-        okHttpClient: OkHttpClient
-    ): Picasso {
-        return Picasso.Builder(context).downloader(OkHttp3Downloader(okHttpClient)).build()
+    fun providerPicasso(@ApplicationContext context: Context): Picasso {
+        return Picasso.Builder(context).build()
     }
+
+    private const val DATABASE_NAME = "database"
 }

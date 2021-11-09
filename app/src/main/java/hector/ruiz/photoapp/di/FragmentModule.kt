@@ -6,10 +6,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.FragmentComponent
-import hector.ruiz.domain.Photo
+import hector.ruiz.domain.PhotoUi
 import hector.ruiz.photoapp.ui.PhotoAdapter
 import hector.ruiz.presentation.list.PagingDataSourceImpl
-import hector.ruiz.usecase.usecases.AddPhotoUseCase
 import hector.ruiz.usecase.usecases.GetPhotosUseCase
 
 @Module
@@ -22,7 +21,7 @@ object FragmentModule {
     }
 
     @Provides
-    fun providerPagingDataSourceImpl(getPhotosUseCase: GetPhotosUseCase): PagingSource<Int, Photo> {
+    fun providerPagingDataSourceImpl(getPhotosUseCase: GetPhotosUseCase): PagingSource<Int, PhotoUi> {
         return PagingDataSourceImpl(getPhotosUseCase)
     }
 }

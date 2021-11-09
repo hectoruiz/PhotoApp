@@ -7,34 +7,34 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import hector.ruiz.domain.Photo
+import hector.ruiz.domain.PhotoUi
 import hector.ruiz.photoapp.R
 import hector.ruiz.photoapp.databinding.ItemPhotoBinding
 import javax.inject.Inject
 
 class PhotoAdapter @Inject constructor(private val picasso: Picasso) :
-    PagingDataAdapter<Photo, PhotoAdapter.PhotoViewHolder>(DiffUtilCallback()) {
+    PagingDataAdapter<PhotoUi, PhotoAdapter.PhotoViewHolder>(DiffUtilCallback()) {
 
-    var onDeleteClick: ((String?) -> Unit)? = null
+    var onDeleteClick: ((PhotoUi?) -> Unit)? = null
 
     inner class PhotoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ItemPhotoBinding.bind(view)
 
         init {
             /*binding.characterDetail.setOnClickListener {
-                onDeleteClick?.invoke(getItem(bindingAdapterPosition)?.id)
+                onDeleteClick?.invoke(getItem(bindingAdapterPosition))
             }*/
         }
 
-        fun bind(photo: Photo?) {
+        fun bind(photoUi: PhotoUi?) {
             /*with(binding) {
                 characterProgress.isVisible = true
                 picasso.loadImage(
-                    photo?.path,
+                    photoUi?.path,
                     this.photoImage,
                     this.photoProgress
                 )
-                this.photoDate = photo?.date
+                this.photoDate = photoUi?.date
             }*/
         }
     }
@@ -55,12 +55,12 @@ class PhotoAdapter @Inject constructor(private val picasso: Picasso) :
         holder.bind(photo)
     }
 
-    class DiffUtilCallback : DiffUtil.ItemCallback<Photo>() {
-        override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+    class DiffUtilCallback : DiffUtil.ItemCallback<PhotoUi>() {
+        override fun areItemsTheSame(oldItem: PhotoUi, newItem: PhotoUi): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+        override fun areContentsTheSame(oldItem: PhotoUi, newItem: PhotoUi): Boolean {
             return oldItem == newItem
         }
     }
