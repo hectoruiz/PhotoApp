@@ -11,15 +11,15 @@ class MemoryDataSourceImpl @Inject constructor(
     private val photoMapper: PhotoMapper
 ) : MemoryDataSource {
 
-    override suspend fun addPhoto(photo: PhotoUi) {
-        apiDatabase.photoDao().add(photoMapper.uiModelToModel(photo))
-    }
+    override suspend fun addPhoto(photo: PhotoUi) =
+        apiDatabase.photoDao().add(photoMapper.uiModelToModel(photo)).let { photoId ->
+            PhotoUi(photoId, photo.date, photo.path)
+        }
 
-    override suspend fun getAllPhotos(size: Int): List<PhotoUi> {
-        return apiDatabase.photoDao().getAll(size).map { photo ->
+    override suspend fun getAllPhotos(): List<PhotoUi> =
+        apiDatabase.photoDao().getAll().map { photo ->
             photoMapper.modelToUiModel(photo)
         }
-    }
 
     override suspend fun removePhoto(photo: PhotoUi) {
         apiDatabase.photoDao().delete(photoMapper.uiModelToModel(photo))

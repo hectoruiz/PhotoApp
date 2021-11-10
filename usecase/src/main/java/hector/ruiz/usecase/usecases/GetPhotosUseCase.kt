@@ -5,6 +5,6 @@ import javax.inject.Inject
 
 class GetPhotosUseCase @Inject constructor(private val photoRepository: PhotoRepository) {
 
-    suspend operator fun invoke(size: Int) =
-        photoRepository.getAllPhotos(size)
+    suspend operator fun invoke() =
+        photoRepository.getAllPhotos()
 }

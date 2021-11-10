@@ -1,4 +1,5 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="margin_parent">8dp</dimen>
+    <dimen name="big_margin_parent">16dp</dimen>
+    <dimen name="small_margin_parent">8dp</dimen>
+    <dimen name="photo_size">150dp</dimen>
 </resources>

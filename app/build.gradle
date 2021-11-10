@@ -59,7 +59,6 @@ dependencies {
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "androidx.fragment:fragment-ktx:$rootProject.extensionsVersion"
-    implementation "androidx.paging:paging-runtime-ktx:$rootProject.pagingVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$rootProject.toolsAndroidVersion"

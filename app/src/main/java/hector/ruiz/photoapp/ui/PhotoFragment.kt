@@ -2,22 +2,28 @@ package hector.ruiz.photoapp.ui
 
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider.getUriForFile
-import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import hector.ruiz.commons.extensions.loadImage
 import hector.ruiz.commons.extensions.snackBarIndefinite
+import hector.ruiz.commons.extensions.snackBarLong
+import hector.ruiz.commons.utils.CrudOperations
 import hector.ruiz.domain.PhotoUi
 import hector.ruiz.photoapp.BuildConfig
 import hector.ruiz.photoapp.R
 import hector.ruiz.photoapp.databinding.FragmentPhotoBinding
+import hector.ruiz.photoapp.ui.adapter.PhotoAdapter
+import hector.ruiz.photoapp.ui.adapter.PhotoItemDecoration
+import hector.ruiz.presentation.PhotoViewModel
 import java.io.File
 import java.time.OffsetDateTime
 import javax.inject.Inject
@@ -28,6 +34,8 @@ class PhotoFragment : Fragment() {
     private var _binding: FragmentPhotoBinding? = null
     private val binding get() = _binding
     private var photoUi: PhotoUi? = null
+    private val photoViewModel: PhotoViewModel by viewModels()
+    private var removePosition: Int = 0
 
     @Inject
     lateinit var photoAdapter: PhotoAdapter
@@ -38,13 +46,7 @@ class PhotoFragment : Fragment() {
     private val takePhotoResult =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
             if (isSuccess) {
-                getImageUri()?.let { fileUri ->
-                    picasso.loadImage(
-                        fileUri,
-                        binding?.testImage,
-                        binding?.photoListProgress
-                    )
-                }
+                photoViewModel.addPhotoToDatabase(photoUi)
             }
         }
 
@@ -59,12 +61,26 @@ class PhotoFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        binding?.photoList?.adapter =
-            photoAdapter.also { it.withLoadStateFooter(PhotoLoadStateAdapter { it.retry() }) }
-        photoAdapter.onDeleteClick = { photo ->
+        binding?.photoList?.apply {
+            this.layoutManager = GridLayoutManager(
+                context,
+                COLUMNS_NUMBER,
+                RecyclerView.VERTICAL,
+                false
+            )
+            this.addItemDecoration(
+                PhotoItemDecoration(
+                    context?.resources?.getDimensionPixelSize(
+                        R.dimen.small_margin_parent
+                    ) ?: DEFAULT_ITEM_OFFSET
+                )
+            )
+        }
+        binding?.photoList?.adapter = photoAdapter
+        photoAdapter.onDeleteClick = { photo, pos ->
             photo?.let {
-                // TODO
-                // Call view model to remove the photo id selected
+                removePosition = pos
+                photoViewModel.removePhotoToDatabase(it)
             }
         }
     }
@@ -72,14 +88,42 @@ class PhotoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO
-        // Call view model to get all the photos
+        photoViewModel.getAllPhoto()
 
-        binding?.fab?.setOnClickListener {
+        photoViewModel.isLoading.observe(viewLifecycleOwner, {
+            binding?.photoListProgress?.isVisible = it
+        })
+
+        photoViewModel.photoData.observe(viewLifecycleOwner, { photoData ->
+            photoAdapter.setPhotos(photoData.first)
+            when (photoData.second) {
+                CrudOperations.GET -> {
+                    photoAdapter.notifyItemRangeInserted(0, photoData.first.size)
+                }
+                CrudOperations.REMOVE -> {
+                    photoAdapter.notifyItemRemoved(removePosition)
+                }
+                CrudOperations.ADD -> {
+                    photoAdapter.notifyItemInserted(photoData.first.lastIndex)
+                }
+            }
+        })
+
+        photoViewModel.errorRequest.observe(viewLifecycleOwner, { crudOperation ->
+            if (crudOperation == null) snackBarIndefinite(R.string.request_error)
+            else {
+                snackBarLong(
+                    when (crudOperation) {
+                        CrudOperations.GET -> R.string.recover_error
+                        CrudOperations.REMOVE -> R.string.remove_error
+                        CrudOperations.ADD -> R.string.insert_error
+                    }
+                )
+            }
+        })
+
+        binding?.photoCamera?.setOnClickListener {
             takePhoto()
-            // TODO
-            // Manage camera and storage permissions
-            // Call view model to add the photo id selected
         }
     }
 
@@ -109,27 +153,14 @@ class PhotoFragment : Fragment() {
                 SEPARATOR_IMG_NAME + now.hour + now.minute + now.second + IMG_EXTENSION
     }
 
-    private fun getImageUri(): Uri? {
-        return Uri.parse(photoUi?.path).let { uri ->
-            context?.contentResolver?.query(
-                uri, null, null,
-                null, null
-            )?.let { cursor ->
-                val nameFileIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                cursor.moveToFirst()
-                val imageUri = File(context?.filesDir, cursor.getString(nameFileIndex)).toUri()
-                cursor.close()
-                imageUri
-            }
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     companion object {
+        const val COLUMNS_NUMBER = 3
+        const val DEFAULT_ITEM_OFFSET = 8
         fun newInstance() = PhotoFragment()
         private const val PROVIDER = "provider"
         private const val PREFIX_IMG_NAME = "IMG"

@@ -10,7 +10,7 @@ class PhotoRepositoryImpl @Inject constructor(private val memoryDataSource: Memo
 
     override suspend fun addPhoto(photo: PhotoUi) = memoryDataSource.addPhoto(photo)
 
-    override suspend fun getAllPhotos(size: Int) = memoryDataSource.getAllPhotos(size)
+    override suspend fun getAllPhotos() = memoryDataSource.getAllPhotos()
 
     override suspend fun removePhoto(photo: PhotoUi) = memoryDataSource.removePhoto(photo)
 }

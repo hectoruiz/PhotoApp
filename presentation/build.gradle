@@ -28,7 +28,6 @@ dependencies {
 
     // Android libraries
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
-    implementation "androidx.paging:paging-runtime-ktx:$rootProject.pagingVersion"
 
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:$rootProject.daggerHiltVersion"
