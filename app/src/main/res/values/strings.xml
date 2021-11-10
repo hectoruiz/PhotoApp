@@ -4,11 +4,14 @@
 
     <!-- Content description -->
     <string name="fab_description">Take a picture</string>
+    <string name="picture_description">Picture</string>
 
     <!-- Error file access -->
     <string name="error_uri_file">Can not use the camera. File access error. Try again later.</string>
 
-    <!-- Request -->
-    <string name="error_request">The request could not be done. Try again later.</string>
-    <string name="retry_request">Retry</string>
+    <!-- Transactions handling -->
+    <string name="request_error">The request could not be done. Try again later.</string>
+    <string name="recover_error">There are not photos to show. Add new photos.</string>
+    <string name="insert_error">The photo could not be stored. Try again later.</string>
+    <string name="remove_error">The photo could not be removed. Try again later.</string>
 </resources>

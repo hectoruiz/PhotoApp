@@ -9,7 +9,7 @@ import java.time.OffsetDateTime
 data class Photo(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "photoId")
-    val id: Int,
+    val id: Long,
     @ColumnInfo(name = "photoDateCreated")
     val date: OffsetDateTime,
     @ColumnInfo(name = "photoPath")

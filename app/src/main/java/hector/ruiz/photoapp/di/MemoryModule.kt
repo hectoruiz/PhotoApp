@@ -22,7 +22,6 @@ abstract class MemoryModule {
     abstract fun bindsPhotoRepository(repositoryImpl: PhotoRepositoryImpl): PhotoRepository
 
     companion object {
-
         @Provides
         fun providerPhotoMapper(): PhotoMapper {
             return PhotoMapper()

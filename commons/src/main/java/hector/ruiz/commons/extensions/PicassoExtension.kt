@@ -9,13 +9,12 @@ import com.squareup.picasso.Picasso
 import hector.ruiz.commons.R
 
 fun Picasso.loadImage(
-    fileUri: Uri,
+    fileUri: Uri?,
     appCompatImageView: AppCompatImageView?,
     circularProgressIndicator: CircularProgressIndicator?
 ) {
     this
         .load(fileUri)
-        .centerInside()
         .fit()
         .placeholder(R.drawable.photo_placeholder)
         .error(R.drawable.photo_error)

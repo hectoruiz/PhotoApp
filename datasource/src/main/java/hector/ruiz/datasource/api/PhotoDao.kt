@@ -9,15 +9,12 @@ import hector.ruiz.commons.entities.Photo
 @Dao
 interface PhotoDao {
 
-    @Query(
-        """SELECT * FROM Photo WHERE photoId IN (SELECT photoId FROM Photo 
-        ORDER BY datetime(photoDateCreated) ASC LIMIT :size)"""
-    )
-    suspend fun getAll(size: Int): List<Photo>
+    @Query("SELECT * FROM Photo WHERE photoId")
+    suspend fun getAll(): List<Photo>
 
     @Delete
     suspend fun delete(photo: Photo)
 
     @Insert
-    suspend fun add(photo: Photo)
+    suspend fun add(photo: Photo): Long
 }
