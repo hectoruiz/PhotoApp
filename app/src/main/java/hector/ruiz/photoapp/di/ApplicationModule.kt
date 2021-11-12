@@ -17,7 +17,7 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun providerApiClient(@ApplicationContext context: Context): ApiDatabase {
+    fun providerApiDatabase(@ApplicationContext context: Context): ApiDatabase {
         return Room.databaseBuilder(context, ApiDatabase::class.java, DATABASE_NAME).build()
     }
 

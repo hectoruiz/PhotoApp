@@ -43,13 +43,16 @@ class PhotoViewModel @Inject constructor(
         photoUi?.let { photoUi ->
             addPhotoUseCase(photoUi).let { photoUiAdded ->
                 val tempList: MutableLiveData<MutableList<PhotoUi>> = MutableLiveData()
-                tempList.value = listToMutableList(_photoData.value?.first).also {
+                tempList.value = listToMutableList(_photoData.value?.first ?: emptyList()).also {
                     it?.add(photoUiAdded)
                 }
                 _photoData.postValue(Pair(mutableListToList(tempList.value), CrudOperations.ADD))
                 _isLoading.postValue(false)
             }
-        } ?: _errorRequest.postValue(CrudOperations.ADD)
+        } ?: run {
+            _errorRequest.postValue(CrudOperations.ADD)
+            _isLoading.postValue(false)
+        }
     }
 
     fun getAllPhoto() = viewModelScope.launch(exceptionHandler) {
@@ -60,17 +63,25 @@ class PhotoViewModel @Inject constructor(
         _isLoading.postValue(false)
     }
 
-    fun removePhotoToDatabase(photoUi: PhotoUi?) = viewModelScope.launch(exceptionHandler) {
+    fun removePhotoFromDatabase(photoUi: PhotoUi?) = viewModelScope.launch(exceptionHandler) {
         _isLoading.postValue(true)
         photoUi?.let { photoUi ->
             removePhotoUseCase(photoUi).let {
                 val tempList: MutableLiveData<MutableList<PhotoUi>> = MutableLiveData()
-                tempList.value = listToMutableList(_photoData.value?.first).also {
+                tempList.value = listToMutableList(_photoData.value?.first ?: emptyList()).also {
                     it?.remove(photoUi)
                 }
-                _photoData.postValue(Pair(mutableListToList(tempList.value), CrudOperations.REMOVE))
+                _photoData.postValue(
+                    Pair(
+                        mutableListToList(tempList.value),
+                        CrudOperations.REMOVE
+                    )
+                )
                 _isLoading.postValue(false)
             }
-        } ?: _errorRequest.postValue(CrudOperations.REMOVE)
+        } ?: run {
+            _errorRequest.postValue(CrudOperations.REMOVE)
+            _isLoading.postValue(false)
+        }
     }
 }

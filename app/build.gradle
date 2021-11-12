@@ -15,7 +15,7 @@ android {
         versionCode rootProject.versionCodeVersion
         versionName rootProject.versionNameVersion
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "hector.ruiz.photoapp.ui.utils.TestRunner"
     }
 
     buildTypes {
@@ -42,6 +42,12 @@ android {
     packagingOptions {
         resources.excludes += "DebugProbesKt.bin"
     }
+
+    configurations.all {
+        resolutionStrategy {
+            force "androidx.test:monitor:$rootProject.testMonitorVersion"
+        }
+    }
 }
 
 dependencies {
@@ -58,7 +64,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
-    implementation "androidx.fragment:fragment-ktx:$rootProject.extensionsVersion"
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentExtensionsVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$rootProject.toolsAndroidVersion"
@@ -72,6 +78,11 @@ dependencies {
 
     // Testing libraries
     testImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation "androidx.test:core-ktx:$rootProject.extensionTestingVersion"
+    androidTestImplementation "io.mockk:mockk-android:$rootProject.mockkVersion"
+    debugImplementation "androidx.fragment:fragment-testing:$rootProject.fragmentExtensionsVersion"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$rootProject.daggerHiltVersion"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$rootProject.daggerHiltVersion"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.testJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 }

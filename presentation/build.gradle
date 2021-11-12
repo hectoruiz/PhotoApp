@@ -25,6 +25,7 @@ dependencies {
     implementation project(':usecase')
     implementation project(':domain')
     implementation project(':commons')
+    testImplementation project(':commons')
 
     // Android libraries
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
@@ -38,6 +39,9 @@ dependencies {
 
     // Testing libraries
     testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "io.mockk:mockk:$rootProject.mockkVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$rootProject.coroutinesVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.testJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 }

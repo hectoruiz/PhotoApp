@@ -25,7 +25,7 @@ android {
 dependencies {
 
     // Android Libraries
-    implementation "androidx.fragment:fragment-ktx:$rootProject.extensionsVersion"
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentExtensionsVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
@@ -35,4 +35,10 @@ dependencies {
 
     // Picasso
     implementation "com.squareup.picasso:picasso:$rootProject.picassoVersion"
+
+    // Testing libraries
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "io.mockk:mockk:$rootProject.mockkVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$rootProject.coroutinesVersion"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.testJunitVersion"
 }
