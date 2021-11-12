@@ -7,7 +7,8 @@ ext {
     // App SDK Properties
     compileSdkVersion = 31
     minSdkVersion = 21
-    targetSdkVersion = compileSdkVersion
+    // Manifest merge issue with targetSdk 31
+    targetSdkVersion = 30
     versionCodeVersion = 1
     versionNameVersion = "1.0"
 
@@ -21,7 +22,7 @@ ext {
     materialVersion = "1.4.0"
     constraintLayoutVersion = "2.1.1"
     lifecycleVersion = "2.4.0"
-    extensionsVersion = "1.3.6"
+    fragmentExtensionsVersion = "1.3.6"
     roomVersion = "2.3.0"
     toolsAndroidVersion = "1.1.5"
 
@@ -39,4 +40,7 @@ ext {
     mockkVersion = "1.12.0"
     testJunitVersion = "1.1.3"
     espressoVersion = "3.4.0"
+    coreTestingVersion = "2.1.0"
+    extensionTestingVersion = "1.4.0"
+    testMonitorVersion = "1.4.0"
 }

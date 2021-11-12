@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import hector.ruiz.commons.extensions.snackBarIndefinite
 import hector.ruiz.commons.extensions.snackBarLong
@@ -39,9 +38,6 @@ class PhotoFragment : Fragment() {
 
     @Inject
     lateinit var photoAdapter: PhotoAdapter
-
-    @Inject
-    lateinit var picasso: Picasso
 
     private val takePhotoResult =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
@@ -80,7 +76,7 @@ class PhotoFragment : Fragment() {
         photoAdapter.onDeleteClick = { photo, pos ->
             photo?.let {
                 removePosition = pos
-                photoViewModel.removePhotoToDatabase(it)
+                photoViewModel.removePhotoFromDatabase(it)
             }
         }
     }

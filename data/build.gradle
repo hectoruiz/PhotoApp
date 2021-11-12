@@ -14,5 +14,6 @@ dependencies {
 
     // Testing libraries
     testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$rootProject.coroutinesVersion"
     testImplementation "io.mockk:mockk:$rootProject.mockkVersion"
 }

@@ -6,9 +6,8 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 
 fun Fragment.snackBar(stringId: Int, duration: Int) {
-    val view = view
     view?.let {
-        Snackbar.make(view, stringId, duration).show()
+        Snackbar.make(it, stringId, duration).show()
     }
 }
 
