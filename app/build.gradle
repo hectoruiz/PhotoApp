@@ -93,7 +93,6 @@ dependencies {
     testImplementation "junit:junit:$rootProject.junitVersion"
     androidTestImplementation "androidx.test:core-ktx:$rootProject.extensionTestingVersion"
     androidTestImplementation "io.mockk:mockk-android:$rootProject.mockkVersion"
-    debugImplementation "androidx.fragment:fragment-testing:$rootProject.fragmentExtensionsVersion"
     androidTestImplementation "com.google.dagger:hilt-android-testing:$rootProject.daggerHiltVersion"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$rootProject.daggerHiltVersion"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.testJunitVersion"
