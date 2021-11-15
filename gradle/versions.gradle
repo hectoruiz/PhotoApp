@@ -7,8 +7,7 @@ ext {
     // App SDK Properties
     compileSdkVersion = 31
     minSdkVersion = 21
-    // Manifest merge issue with targetSdk 31
-    targetSdkVersion = 30
+    targetSdkVersion = compileSdkVersion
     versionCodeVersion = 1
     versionNameVersion = "1.0"
 
