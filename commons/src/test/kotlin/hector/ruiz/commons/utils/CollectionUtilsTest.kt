@@ -6,12 +6,12 @@ import org.junit.Test
 class CollectionUtilsTest {
 
     @Test
-    fun listToMutableList() {
+    fun `list to mutableList`() {
         assertEquals(mutableList, CollectionUtils.listToMutableList(list))
     }
 
     @Test
-    fun mutableListToList() {
+    fun `mutableList to list`() {
         assertEquals(list, CollectionUtils.mutableListToList(mutableList))
     }
 

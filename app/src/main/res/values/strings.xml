@@ -12,6 +12,8 @@
     <!-- Transactions handling -->
     <string name="request_error">The request could not be done. Try again later.</string>
     <string name="recover_error">There are not photos to show. Add new photos.</string>
+    <string name="insert_success">Photo added successfully.</string>
     <string name="insert_error">The photo could not be stored. Try again later.</string>
+    <string name="remove_success">Photo removed successfully.</string>
     <string name="remove_error">The photo could not be removed. Try again later.</string>
 </resources>
