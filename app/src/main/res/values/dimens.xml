@@ -1,5 +1,7 @@
 <resources>
     <dimen name="big_margin_parent">16dp</dimen>
     <dimen name="small_margin_parent">8dp</dimen>
+    <dimen name="photo_bottom_margin">4dp</dimen>
     <dimen name="photo_size">150dp</dimen>
+    <dimen name="progress_size">50dp</dimen>
 </resources>

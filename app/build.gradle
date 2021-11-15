@@ -36,11 +36,15 @@ android {
     }
 
     buildFeatures {
-        viewBinding true
+        compose true
     }
 
     packagingOptions {
         resources.excludes += "DebugProbesKt.bin"
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion rootProject.kotlinCompilerExtensionVersion
     }
 
     configurations.all {
@@ -51,7 +55,6 @@ android {
 }
 
 dependencies {
-
     implementation project(':usecase')
     implementation project(':data')
     implementation project(':datasource')
@@ -62,19 +65,29 @@ dependencies {
     // Android Libraries
     implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
+    implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentExtensionsVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$rootProject.toolsAndroidVersion"
+    implementation "androidx.activity:activity-compose:$rootProject.composeVersion"
+    implementation "androidx.compose.material:material:$rootProject.activityComposeVersion"
+    implementation "androidx.compose.animation:animation:$rootProject.activityComposeVersion"
+    implementation "androidx.compose.animation:animation:$rootProject.activityComposeVersion"
+    implementation "androidx.compose.runtime:runtime-livedata:$rootProject.activityComposeVersion"
+    implementation "androidx.compose.ui:ui-tooling:$rootProject.activityComposeVersion"
+    implementation "com.google.android.material:compose-theme-adapter:$rootProject.materialComposeVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$rootProject.viewModelcomposeVersion"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$rootProject.toolsAndroidVersion"
 
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:$rootProject.daggerHiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$rootProject.daggerHiltVersion"
 
-    // Picasso
-    implementation "com.squareup.picasso:picasso:$rootProject.picassoVersion"
+    // Coil
+    implementation "io.coil-kt:coil-compose:$rootProject.coilVersion"
 
     // Testing libraries
     testImplementation "junit:junit:$rootProject.junitVersion"
@@ -85,4 +98,5 @@ dependencies {
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$rootProject.daggerHiltVersion"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.testJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$rootProject.activityComposeVersion"
 }

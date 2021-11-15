@@ -1,7 +1,7 @@
 package hector.ruiz.presentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import hector.ruiz.commons.utils.CrudOperations
+import hector.ruiz.commons.utils.ResultRequest
 import hector.ruiz.domain.PhotoUi
 import hector.ruiz.presentation.utils.CoroutineRule
 import hector.ruiz.usecase.usecases.AddPhotoUseCase
@@ -54,9 +54,8 @@ class PhotoViewModelTest {
         }
 
         with(photoViewModel) {
-            assertNull(this.photoData.value?.first)
-            assertNull(this.photoData.value?.second)
-            assertEquals(CrudOperations.ADD, this.errorRequest.value)
+            assertNull(this.photoData.value)
+            assertTrue(this.resultRequest.value is ResultRequest.Error.Add)
             assertEquals(false, this.isLoading.value)
         }
     }
@@ -73,9 +72,8 @@ class PhotoViewModelTest {
         }
 
         with(photoViewModel) {
-            assertEquals(listOf(responseData), this.photoData.value?.first)
-            assertEquals(CrudOperations.ADD, this.photoData.value?.second)
-            assertNull(this.errorRequest.value)
+            assertEquals(listOf(responseData), this.photoData.value)
+            assertTrue(this.resultRequest.value is ResultRequest.Success.Add)
             assertEquals(false, this.isLoading.value)
         }
     }
@@ -91,9 +89,8 @@ class PhotoViewModelTest {
         }
 
         with(photoViewModel) {
-            assertEquals(responseData, this.photoData.value?.first)
-            assertEquals(CrudOperations.GET, this.photoData.value?.second)
-            assertNull(this.errorRequest.value)
+            assertEquals(responseData, this.photoData.value)
+            assertNull(this.resultRequest.value)
             assertEquals(false, this.isLoading.value)
         }
     }
@@ -109,9 +106,8 @@ class PhotoViewModelTest {
         }
 
         with(photoViewModel) {
-            assertNull(this.photoData.value?.first)
-            assertNull(this.photoData.value?.second)
-            assertEquals(CrudOperations.GET, this.errorRequest.value)
+            assertNull(this.photoData.value)
+            assertTrue(this.resultRequest.value is ResultRequest.Error.Get)
             assertEquals(false, this.isLoading.value)
         }
     }
@@ -125,9 +121,8 @@ class PhotoViewModelTest {
         }
 
         with(photoViewModel) {
-            assertNull(this.photoData.value?.first)
-            assertNull(this.photoData.value?.second)
-            assertEquals(CrudOperations.REMOVE, this.errorRequest.value)
+            assertNull(this.photoData.value)
+            assertTrue(this.resultRequest.value is ResultRequest.Error.Remove)
             assertEquals(false, this.isLoading.value)
         }
     }
@@ -135,25 +130,23 @@ class PhotoViewModelTest {
     @Test
     fun `removePhotoFromDatabase with correct photo to remove`() {
         val parameter = mockk<PhotoUi>()
-        val photoUi = mockk<PhotoUi>()
 
+        coEvery { addPhotoUseCase(parameter) } returns parameter
         coEvery { removePhotoUseCase(parameter) } returns any()
 
-        photoViewModel.photoData.postValue(Pair(listOf(parameter, photoUi), CrudOperations.REMOVE))
-
         runBlocking {
+            photoViewModel.addPhotoToDatabase(parameter)
             photoViewModel.removePhotoFromDatabase(parameter)
         }
 
         with(photoViewModel) {
             assertThrows(NoSuchElementException::class.java) {
-                this.photoData.value?.first?.first {
+                this.photoData.value?.first {
                     it == parameter
                 }
             }
-            assertEquals(false, this.photoData.value?.first?.isEmpty())
-            assertEquals(CrudOperations.REMOVE, this.photoData.value?.second)
-            assertNull(this.errorRequest.value)
+            assertEquals(true, this.photoData.value?.isEmpty())
+            assertTrue(this.resultRequest.value is ResultRequest.Success.Remove)
             assertEquals(false, this.isLoading.value)
         }
     }

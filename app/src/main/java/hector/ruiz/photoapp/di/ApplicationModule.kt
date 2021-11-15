@@ -2,7 +2,6 @@ package hector.ruiz.photoapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,12 +18,6 @@ object ApplicationModule {
     @Singleton
     fun providerApiDatabase(@ApplicationContext context: Context): ApiDatabase {
         return Room.databaseBuilder(context, ApiDatabase::class.java, DATABASE_NAME).build()
-    }
-
-    @Provides
-    @Singleton
-    fun providerPicasso(@ApplicationContext context: Context): Picasso {
-        return Picasso.Builder(context).build()
     }
 
     private const val DATABASE_NAME = "database"

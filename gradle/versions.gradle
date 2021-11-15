@@ -19,12 +19,18 @@ ext {
     // Android Libraries
     coreKtxVersion = "1.7.0"
     appCompatVersion = "1.3.1"
+    activityVersion = "1.4.0"
     materialVersion = "1.4.0"
     constraintLayoutVersion = "2.1.1"
     lifecycleVersion = "2.4.0"
     fragmentExtensionsVersion = "1.3.6"
     roomVersion = "2.3.0"
     toolsAndroidVersion = "1.1.5"
+    kotlinCompilerExtensionVersion = "1.0.5"
+    activityComposeVersion = "1.0.5"
+    composeVersion = "1.4.0"
+    materialComposeVersion = "1.1.0"
+    viewModelcomposeVersion = "2.4.0"
 
     // Dagger Hilt
     daggerHiltVersion = "2.38.1"
@@ -32,8 +38,8 @@ ext {
     // Coroutines
     coroutinesVersion = "1.5.2"
 
-    // Picasso
-    picassoVersion = "2.8"
+    // Coil
+    coilVersion = "1.4.0"
 
     // Testing Libraries
     junitVersion = "4.13.2"

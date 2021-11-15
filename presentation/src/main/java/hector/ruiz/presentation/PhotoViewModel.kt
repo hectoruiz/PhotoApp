@@ -1,10 +1,13 @@
 package hector.ruiz.presentation
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hector.ruiz.commons.utils.CollectionUtils.listToMutableList
 import hector.ruiz.commons.utils.CollectionUtils.mutableListToList
-import hector.ruiz.commons.utils.CrudOperations
+import hector.ruiz.commons.utils.ResultRequest
 import hector.ruiz.domain.PhotoUi
 import hector.ruiz.usecase.usecases.AddPhotoUseCase
 import hector.ruiz.usecase.usecases.GetPhotosUseCase
@@ -17,70 +20,75 @@ import javax.inject.Inject
 class PhotoViewModel @Inject constructor(
     private val getPhotosUseCase: GetPhotosUseCase,
     private val addPhotoUseCase: AddPhotoUseCase,
-    private val removePhotoUseCase: RemovePhotoUseCase
+    private val removePhotoUseCase: RemovePhotoUseCase,
 ) : ViewModel() {
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
-        _errorRequest.postValue(null)
+        _isLoading.postValue(false)
+        _resultRequest.postValue(ResultRequest.Error.Request)
     }
 
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val isLoading: LiveData<Boolean>
         get() = _isLoading
 
-    private val _photoData: MediatorLiveData<Pair<List<PhotoUi>, CrudOperations>> =
-        MediatorLiveData()
-    val photoData: MediatorLiveData<Pair<List<PhotoUi>, CrudOperations>>
+    private val _photoData: MutableLiveData<List<PhotoUi>> = MutableLiveData()
+    val photoData: LiveData<List<PhotoUi>>
         get() = _photoData
 
-    private val _errorRequest: MutableLiveData<CrudOperations> = MutableLiveData()
-    val errorRequest: LiveData<CrudOperations>
-        get() = _errorRequest
+    private val _resultRequest: MutableLiveData<ResultRequest> = MutableLiveData()
+    val resultRequest: LiveData<ResultRequest>
+        get() = _resultRequest
+
+    private fun initRequest() {
+        _isLoading.postValue(true)
+        _resultRequest.postValue(null)
+    }
 
     fun addPhotoToDatabase(photoUi: PhotoUi?) = viewModelScope.launch(exceptionHandler) {
-        _isLoading.postValue(true)
+        initRequest()
         photoUi?.let { photoUi ->
             addPhotoUseCase(photoUi).let { photoUiAdded ->
                 val tempList: MutableLiveData<MutableList<PhotoUi>> = MutableLiveData()
-                tempList.value = listToMutableList(_photoData.value?.first ?: emptyList()).also {
+                tempList.value = listToMutableList(_photoData.value ?: emptyList()).also {
                     it?.add(photoUiAdded)
                 }
-                _photoData.postValue(Pair(mutableListToList(tempList.value), CrudOperations.ADD))
+                _photoData.postValue(mutableListToList(tempList.value))
                 _isLoading.postValue(false)
+                _resultRequest.postValue(ResultRequest.Success.Add)
             }
         } ?: run {
-            _errorRequest.postValue(CrudOperations.ADD)
+            _resultRequest.postValue(ResultRequest.Error.Add)
             _isLoading.postValue(false)
         }
     }
 
     fun getAllPhoto() = viewModelScope.launch(exceptionHandler) {
-        _isLoading.postValue(true)
+        initRequest()
         val result = getPhotosUseCase()
-        if (result.isEmpty()) _errorRequest.postValue(CrudOperations.GET)
-        else _photoData.postValue(Pair(result, CrudOperations.GET))
+        if (result.isEmpty()) _resultRequest.postValue(ResultRequest.Error.Get)
+        else {
+            _photoData.postValue(result)
+            _resultRequest.postValue(null)
+        }
         _isLoading.postValue(false)
     }
 
     fun removePhotoFromDatabase(photoUi: PhotoUi?) = viewModelScope.launch(exceptionHandler) {
-        _isLoading.postValue(true)
+        initRequest()
         photoUi?.let { photoUi ->
             removePhotoUseCase(photoUi).let {
                 val tempList: MutableLiveData<MutableList<PhotoUi>> = MutableLiveData()
-                tempList.value = listToMutableList(_photoData.value?.first ?: emptyList()).also {
+                tempList.value = listToMutableList(_photoData.value ?: emptyList()).also {
                     it?.remove(photoUi)
                 }
-                _photoData.postValue(
-                    Pair(
-                        mutableListToList(tempList.value),
-                        CrudOperations.REMOVE
-                    )
-                )
+                _photoData.postValue(mutableListToList(tempList.value))
+                _resultRequest.postValue(ResultRequest.Success.Remove)
                 _isLoading.postValue(false)
             }
         } ?: run {
-            _errorRequest.postValue(CrudOperations.REMOVE)
+            _resultRequest.postValue(ResultRequest.Error.Remove)
             _isLoading.postValue(false)
         }
     }

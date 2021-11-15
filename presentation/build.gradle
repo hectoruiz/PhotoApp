@@ -21,11 +21,9 @@ android {
 }
 
 dependencies {
-
     implementation project(':usecase')
     implementation project(':domain')
     implementation project(':commons')
-    testImplementation project(':commons')
 
     // Android libraries
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
