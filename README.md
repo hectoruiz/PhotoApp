@@ -2,7 +2,7 @@
 
 ## Project Description
 Simple app with infinite list to show the images taken by the camera stored in a database.
-- The app was made with a single activity *without* fragments.
+- The app was made with a single activity without fragments.
 - App made using clean architecture in a modularized project.
 - The app don't request to user the permissions of camera and write/read storage.
 - The app supports the light and dark theme.
