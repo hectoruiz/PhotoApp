@@ -6,7 +6,6 @@ import javax.inject.Inject
 
 class AddPhotoUseCase @Inject constructor(private val photoRepository: PhotoRepository) {
 
-    suspend operator fun invoke(photo: PhotoUi): PhotoUi {
-        return photoRepository.addPhoto(photo)
-    }
+    suspend operator fun invoke(photo: PhotoUi) =
+        photoRepository.addPhoto(photo)
 }
